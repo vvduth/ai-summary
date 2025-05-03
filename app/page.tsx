@@ -1,3 +1,4 @@
+import CtaSection from "@/components/home/cta-section";
 import DemoSection from "@/components/home/demo-section";
 import HeroSection from "@/components/home/hero-section";
 import HowItWorks from "@/components/home/how-it-works";
@@ -9,15 +10,13 @@ export default function Home() {
     <div className="relative w-full">
       {/* Hero */}
       <div className="flex flex-col">
-      
-      <HeroSection  />
-      <DemoSection />
-      <HowItWorks />
+        <HeroSection />
+        <DemoSection />
+        <HowItWorks />
+        <PricingSection />
+        {/* cta  */}
+        <CtaSection />
       </div>
-      
-     
-      <PricingSection />
-      {/* cta  */}
     </div>
   );
 }
