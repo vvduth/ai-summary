@@ -5,6 +5,10 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-primary: oklch(0.6 0.2 240); /* Sky blue primary */
+  --color-secondary: oklch(0.8 0.1 240); /* Lighter sky blue secondary */
+  --color-accent: oklch(0.7 0.15 240); /* Accent sky blue */
+  --color-muted: oklch(0.9 0.05 240); /* Muted sky blue */
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -41,6 +45,16 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
 }
 
 :root {
@@ -114,21 +128,49 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
+  h1 {
+    @apply text-4xl md:text-6xl xl:text-7xl font-bold;
+  }
+
+  h2 {
+    @apply text-xl lg:text-3xl font-medium;
+  }
+
+  h3 {
+    @apply text-2xl lg:text-4xl font-medium;
+  }
+
+  a {
+    @apply hover:cursor-pointer;
   }
 
   button {
-    @apply hover:cursor-pointer bg-sky-500 hover:bg-sky-600 text-white
+    @apply hover:cursor-pointer bg-sky-600 hover:bg-sky-700;
+  }
+
+  @keyframes gradient-x {
+    0%,
+    100% {
+      background-size: 200% 100%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 100%;
+      background-position: right center;
+    }
+  }
+
+  .animate-gradient-x {
+    animation: gradient-x 3s ease infinite;
   }
 }
 
 
 @utility container {
-  margin-inline: auto; 
-  padding-inline: 2rem; 
+  margin-inline: auto;
+  padding-inline: 2rem;
   @media (width >= --theme(--breakpoint-sm)) {
     max-width: none;
   }
