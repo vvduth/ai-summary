@@ -1,5 +1,7 @@
 import DemoSection from "@/components/home/demo-section";
 import HeroSection from "@/components/home/hero-section";
+import HowItWorks from "@/components/home/how-it-works";
+import PricingSection from "@/components/home/pricing-section";
 import Image from "next/image";
 
 export default function Home() {
@@ -9,10 +11,12 @@ export default function Home() {
       <div className="flex flex-col">
       
       <HeroSection  />
+      <DemoSection />
+      <HowItWorks />
       </div>
       
-      <DemoSection />
-      {/* pricing */}
+     
+      <PricingSection />
       {/* cta  */}
     </div>
   );
