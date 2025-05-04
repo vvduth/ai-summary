@@ -3,6 +3,7 @@ import React from "react";
 import { FileText } from "lucide-react";
 import { Button } from "../ui/button";
 import NavLink from "./nav-link";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 const Header = () => {
   const isLoggingIn = false; // Replace with your authentication logic
   return (
@@ -26,24 +27,28 @@ const Header = () => {
         </NavLink>
       </div>
       <div className="flex lg:justify-center gap-4 lg:gap-12 lg:items-center">
-        { isLoggingIn && (
-            <NavLink href={"/#dashboard"}>Your summaries</NavLink>
-        )}
+        <SignedIn>
+          <NavLink href={"/#dashboard"}>Your summaries</NavLink>
+        </SignedIn>
 
         <NavLink href={"/#pricing"}>Pricing</NavLink>
       </div>
       <div className="flex lg:justify-end lg:flex-1">
-        {isLoggingIn ? (
+        <SignedIn>
           <div className="flex gap-2 items-center">
             <NavLink href={"/#upload"}>Upload a PDF</NavLink>
-            <div>Pro</div>
-            <Button>User</Button>
+            <div className="px-2 py-1 text-sm font-semibold text-white bg-blue-500 rounded-md">
+              Pro
+            </div>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
           </div>
-        ) : (
-          <div>
-            <NavLink href={"/#login"}>Login</NavLink>
-          </div>
-        )}
+        </SignedIn>
+
+        <SignedOut>
+          <NavLink href={"/sign-in"}>Login</NavLink>
+        </SignedOut>
       </div>
     </nav>
   );
