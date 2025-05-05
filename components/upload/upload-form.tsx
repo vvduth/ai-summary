@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { forwardRef, useState } from "react";
 import UploadFormInout from "./upload-form-input";
 import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
@@ -18,7 +18,8 @@ const schema = z.object({
 });
 
 const UploadForm = () => {
-  
+  const formRef = React.useRef<HTMLFormElement>(null);
+  const [isLoading, setIsLoading] = useState(false)
   const { startUpload, routeConfig } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
       console.log("uploaded successfully!");
@@ -26,51 +27,79 @@ const UploadForm = () => {
     onUploadError: () => {
       console.error("error occurred while uploading");
       toast.error("Error occurred while uploading file", {
-        description: "Please try again later",
+        description: "Please try again later "
       });
-
     },
-    onUploadBegin: ({ file }) => {
+    onUploadBegin: (file) => {
       console.log("upload has begun for", file);
     },
   });
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
-    const formData = new FormData(e.currentTarget);
-    const file = formData.get("file") as File;
-    if (!file) {
-      alert("Please select a file to upload.");
-      return;
-    }
+    try {
+      setIsLoading(true)
+      console.log("Form submitted");
+      const formData = new FormData(e.currentTarget);
+      const file = formData.get("file") as File;
+      if (!file) {
+        alert("Please select a file to upload.");
+        return;
+      }
 
-    // validate the field
-    const result = schema.safeParse({ file });
-    if (result.success === false) {
-      console.log(
-        result.error.flatten().fieldErrors.file?.[0] ?? "Invalid file"
-      );
-      toast.error(result.error.flatten().fieldErrors.file?.[0] ?? "Invalid file", {
-        description: "Please select a valid file",
-      });
-      return;
-    }
+      // validate the field
+      const result = schema.safeParse({ file });
+      if (result.success === false) {
+        console.log(
+          result.error.flatten().fieldErrors.file?.[0] ?? "Invalid file"
+        );
+        toast.error(
+          result.error.flatten().fieldErrors.file?.[0] ?? "Invalid file",
+          {
+            description: "Please select a valid file",
+          }
+        );
+        return;
+      }
 
-    // upload the flw to uploadthing
-    const resp = await startUpload([file]);
-    if (!resp) {
+      // upload the flw to uploadthing
+      const resp = await startUpload([file]);
+      console.log("upload response", resp);
+      if (!resp) {
         toast.error("Oh shiet, somthing went wrong homie", {
-            description: "Please try again later boi",
-            
-        })
-      return;
-    }
-    toast.success("File is valid", {
+          description: "Please try again later boi",
+        });
+        return;
+      }
+      toast.success("File is valid", {
         description: "Hang tight, or AI is working on it",
-    })
+      });
 
-    // parse odf using langchain
-    const summary = await generatePdfSummary(resp) ;
+      // parse odf using langchain
+      const summary = await generatePdfSummary(resp);
+      const { data = null, message = null } = summary || {};
+
+      if (!data) {
+        toast.error(message || "Error occurred while generating summary", {
+          description: "Please try again laterrr" ,
+        });
+        return;
+      }
+      if (data) {
+        toast.success("Saving PDF summary to database", {
+          description: "Please wait a moment",
+        });
+        formRef.current?.reset();
+      }
+    } catch (error) {
+      console.error("Error occurred while uploading file", error);
+      toast.error("Error occurred while uploading file", {
+        description: "Please try again laterrrr "
+      });
+      setIsLoading(false);
+      formRef.current?.reset();
+    } finally {
+      setIsLoading(false);
+    }
 
     // summarizde the pdf using AI
     // save the usmmry to the database
@@ -78,7 +107,7 @@ const UploadForm = () => {
   };
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl mx-auto">
-      <UploadFormInout onSubmit={handleSubmit} />
+      <UploadFormInout isLoading={isLoading} ref={formRef} onSubmit={handleSubmit} />
     </div>
   );
 };
