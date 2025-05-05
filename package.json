@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.18.5",
     "@radix-ui/react-slot": "^1.2.0",
+    "@uploadthing/react": "^7.3.0",
     "ai-summary": "file:",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -18,7 +19,9 @@
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^3.2.0"
+    "tailwind-merge": "^3.2.0",
+    "uploadthing": "^7.6.0",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
