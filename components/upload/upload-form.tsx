@@ -4,6 +4,7 @@ import UploadFormInout from "./upload-form-input";
 import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
 import { toast } from "sonner";
+import { generatePdfSummary } from "@/actions/upload-actions";
 
 const schema = z.object({
   file: z
@@ -69,6 +70,8 @@ const UploadForm = () => {
     })
 
     // parse odf using langchain
+    const summary = await generatePdfSummary(resp) ;
+
     // summarizde the pdf using AI
     // save the usmmry to the database
     // reditrect to the [id] summary page
