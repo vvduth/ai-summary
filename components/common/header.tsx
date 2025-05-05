@@ -36,7 +36,7 @@ const Header = () => {
       <div className="flex lg:justify-end lg:flex-1">
         <SignedIn>
           <div className="flex gap-2 items-center">
-            <NavLink href={"/#upload"}>Upload a PDF</NavLink>
+            <NavLink href={"/upload"}>Upload a PDF</NavLink>
             <div className="px-2 py-1 text-sm font-semibold text-white bg-blue-500 rounded-md">
               Pro
             </div>

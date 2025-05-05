@@ -9,19 +9,18 @@ type Step = {
 const steps: Step[] = [
   {
     icon: <FileText size={64} strokeWidth={1.5} />,
-    label: "Upload your PDF",
-    description: "Upload your PDF file to our platform.",
+    label: "Drop Your PDF Like It's Hot",
+    description: "Toss your PDF into our magic machine.",
   },
   {
     icon: <BrainCircuit size={64} strokeWidth={1.5} />,
-    label: "AI get to work",
-    description: "Our AI will analyze the document and generate a summary.",
+    label: "Let the AI Flex",
+    description: "Our AI will flex its brainpower and do the heavy lifting.",
   },
   {
     icon: <FileOutput size={64} strokeWidth={1.5} />,
-
-    label: "Get your summary",
-    description: "Receive a concise summary of your document.",
+    label: "Snag Your SparkNotes",
+    description: "Grab a slick summary of your file, hassle-free.",
   },
 ];
 const HowItWorks = () => {
@@ -31,12 +30,12 @@ const HowItWorks = () => {
         className="py-12 lg:py-24 max-w-5xl mx-auto
       px-4 sm:px-6 lg:px-8 lg:pt-12"
       >
-        <div className="text-center  mb-16">
+        <div className="text-center mb-16">
           <h2 className="font-bold text-4xl uppercase mb-4 text-sky-500">
-            How it works
+            How we roll
           </h2>
           <h3 className="font-bold text-center text-3xl max-w-2xl mask-auto">
-            One PDF and 3 steps and then you are golden!
+            One PDF, 3 steps, and you're living the dream!
           </h3>
         </div>
         <div
