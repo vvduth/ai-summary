@@ -7,10 +7,10 @@ const UploadHeader = () => {
     <div>
       <div
           className="flex flex-col items-center
-            justify-center fap-6 text-center"
+            justify-center gap-6 text-center"
         >
           <div
-            className="reltive p-[1px] overflow-hidden
+            className="relative p-[1px] overflow-hidden
                 rounded-full"
           >
             <Badge

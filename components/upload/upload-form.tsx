@@ -2,6 +2,8 @@
 import React from "react";
 import UploadFormInout from "./upload-form-input";
 import { z } from "zod";
+import { useUploadThing } from "@/utils/uploadthing";
+import { toast } from "sonner";
 
 const schema = z.object({
   file: z
@@ -10,12 +12,27 @@ const schema = z.object({
       message: "File size must be less than 20MB",
     })
     .refine((file) => file.type === "application/pdf", {
-        message: "File must be a PDF",
-    })
-    
+      message: "File must be a PDF",
+    }),
 });
 
 const UploadForm = () => {
+  
+  const { startUpload, routeConfig } = useUploadThing("pdfUploader", {
+    onClientUploadComplete: () => {
+      console.log("uploaded successfully!");
+    },
+    onUploadError: () => {
+      console.error("error occurred while uploading");
+      toast.error("Error occurred while uploading file", {
+        description: "Please try again later",
+      });
+
+    },
+    onUploadBegin: ({ file }) => {
+      console.log("upload has begun for", file);
+    },
+  });
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");
@@ -29,11 +46,28 @@ const UploadForm = () => {
     // validate the field
     const result = schema.safeParse({ file });
     if (result.success === false) {
-      console.log(result.error.flatten().fieldErrors.file?.[0] ?? "Invalid file");
+      console.log(
+        result.error.flatten().fieldErrors.file?.[0] ?? "Invalid file"
+      );
+      toast.error(result.error.flatten().fieldErrors.file?.[0] ?? "Invalid file", {
+        description: "Please select a valid file",
+      });
       return;
     }
-    // schema with zod
+
     // upload the flw to uploadthing
+    const resp = await startUpload([file]);
+    if (!resp) {
+        toast.error("Oh shiet, somthing went wrong homie", {
+            description: "Please try again later boi",
+            
+        })
+      return;
+    }
+    toast.success("File is valid", {
+        description: "Hang tight, or AI is working on it",
+    })
+
     // parse odf using langchain
     // summarizde the pdf using AI
     // save the usmmry to the database

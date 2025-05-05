@@ -14,7 +14,7 @@ const Header = () => {
       <div className="flex lg:flex-1">
         <NavLink
           href={"/"}
-          className="flex items-center gap-1 lg:fap2
+          className="flex items-center gap-1 lg:gap-2
          shrink-0"
         >
           <FileText
