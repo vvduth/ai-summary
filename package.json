@@ -13,6 +13,7 @@
     "@google/genai": "^0.12.0",
     "@langchain/community": "^0.3.42",
     "@langchain/core": "^0.3.51",
+    "@neondatabase/serverless": "^1.0.0",
     "@radix-ui/react-slot": "^1.2.0",
     "@uploadthing/react": "^7.3.0",
     "ai-summary": "file:",
