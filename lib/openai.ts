@@ -8,7 +8,7 @@ const openai = new OpenAI({
 export async function summarizeTextFromOpenAI(text: string) {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-4.1",
       messages: [
         {
           role: "system",
@@ -24,11 +24,10 @@ export async function summarizeTextFromOpenAI(text: string) {
       temperature: 0.7,
       max_tokens: 1500,
     });
-    console.log("openai response", response);
     return response.choices[0].message;
   } catch (error: any) {
     if (error?.status === 429) {
-      throw new Error("Rate limit exceeded. Please try again later.");
+      throw new Error("RATE_LIMIT_EXCEEDED");
     }
     console.error("Error occurred while summarizing text: ", error);
   }
