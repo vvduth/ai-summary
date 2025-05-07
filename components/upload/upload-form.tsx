@@ -4,7 +4,8 @@ import UploadFormInout from "./upload-form-input";
 import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
 import { toast } from "sonner";
-import { generatePdfSummary } from "@/actions/upload-actions";
+import { generatePdfSummary, storePDFSummary } from "@/actions/upload-actions";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   file: z
@@ -20,6 +21,7 @@ const schema = z.object({
 const UploadForm = () => {
   const formRef = React.useRef<HTMLFormElement>(null);
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
   const { startUpload, routeConfig } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
       console.log("uploaded successfully!");
@@ -38,7 +40,6 @@ const UploadForm = () => {
     e.preventDefault();
     try {
       setIsLoading(true)
-      console.log("Form submitted");
       const formData = new FormData(e.currentTarget);
       const file = formData.get("file") as File;
       if (!file) {
@@ -63,7 +64,6 @@ const UploadForm = () => {
 
       // upload the flw to uploadthing
       const resp = await startUpload([file]);
-      console.log("upload response", resp);
       if (!resp) {
         toast.error("Oh shiet, somthing went wrong homie", {
           description: "Please try again later boi",
@@ -85,10 +85,25 @@ const UploadForm = () => {
         return;
       }
       if (data) {
+        let storeResult:any; 
         toast.success("Saving PDF summary to database", {
           description: "Please wait a moment",
         });
+        
+        if (data.summary) {
+          storeResult = await storePDFSummary({
+            fileUrl: resp[0].serverData.fileUrl,
+            summary: data.summary as string,
+            title: data.title,
+            fileName: file.name,
+          })
+          toast.success("PDF summary saved successfully", {
+            description: "You can view the summary in your dashboard",
+          })
+        }
+
         formRef.current?.reset();
+        router.push(`/summary/${storeResult.data.id}`)
       }
     } catch (error) {
       console.error("Error occurred while uploading file", error);
