@@ -20,8 +20,8 @@ const schema = z.object({
 
 const UploadForm = () => {
   const formRef = React.useRef<HTMLFormElement>(null);
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const { startUpload, routeConfig } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
       console.log("uploaded successfully!");
@@ -29,7 +29,7 @@ const UploadForm = () => {
     onUploadError: () => {
       console.error("error occurred while uploading");
       toast.error("Error occurred while uploading file", {
-        description: "Please try again later "
+        description: "Please try again later ",
       });
     },
     onUploadBegin: (file) => {
@@ -39,7 +39,7 @@ const UploadForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const formData = new FormData(e.currentTarget);
       const file = formData.get("file") as File;
       if (!file) {
@@ -75,40 +75,40 @@ const UploadForm = () => {
       });
 
       // parse odf using langchain
-      const summary = await generatePdfSummary(resp);
+      const summary = await generatePdfSummary(resp as any);
       const { data = null, message = null } = summary || {};
 
       if (!data) {
         toast.error(message || "Error occurred while generating summary", {
-          description: "Please try again laterrr" ,
+          description: "Please try again laterrr",
         });
         return;
       }
       if (data) {
-        let storeResult:any; 
+        let storeResult: any;
         toast.success("Saving PDF summary to database", {
           description: "Please wait a moment",
         });
-        
+
         if (data.summary) {
           storeResult = await storePDFSummary({
             fileUrl: resp[0].serverData.fileUrl,
             summary: data.summary as string,
             title: data.title,
             fileName: file.name,
-          })
+          });
           toast.success("PDF summary saved successfully", {
             description: "You can view the summary in your dashboard",
-          })
+          });
         }
 
         formRef.current?.reset();
-        router.push(`/summary/${storeResult.data.id}`)
+        router.push(`/summaries/${storeResult.data.id}`);
       }
     } catch (error) {
       console.error("Error occurred while uploading file", error);
       toast.error("Error occurred while uploading file", {
-        description: "Please try again laterrrr "
+        description: "Please try again laterrrr ",
       });
       setIsLoading(false);
       formRef.current?.reset();
@@ -122,7 +122,11 @@ const UploadForm = () => {
   };
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl mx-auto">
-      <UploadFormInout isLoading={isLoading} ref={formRef} onSubmit={handleSubmit} />
+      <UploadFormInout
+        isLoading={isLoading}
+        ref={formRef}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import EmptySummariesState from "@/components/summaries/empty-summaries";
 import SummaryCard from "@/components/summaries/summary-card";
 import { Button } from "@/components/ui/button";
 import { getSummaryByUserId } from "@/lib/summary";
@@ -53,7 +54,8 @@ const DashboardPage = async () => {
           </p>
         </div>
       </div>
-      <div
+      {summaries.length > 0 ? (
+        <div
         className="container grid grid-cols-1 gap-4 sm:gap-6
         md:grid-cols-2 lg:grid-cols-3 sm:px-0"
       >
@@ -61,6 +63,11 @@ const DashboardPage = async () => {
           <SummaryCard key={index} summary={_} />
         ))}
       </div>
+      ): (
+        <div>
+          <EmptySummariesState />
+        </div>
+      )}
     </main>
   );
 };
