@@ -1,53 +1,20 @@
 import SummaryCard from "@/components/summaries/summary-card";
 import { Button } from "@/components/ui/button";
+import { getSummaryByUserId } from "@/lib/summary";
+import { currentUser } from "@clerk/nextjs/server";
 import { ArrowRight, Plus } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 
-const DashboardPage = () => {
+const DashboardPage = async () => {
+    const user = await currentUser();
+    const userId = user?.id;
+    if (!user?.id) {
+        return redirect("/sign-in");
+    }
   const uploadLimit = 5; // Example limit
-  const summaries = [
-    {
-      id: 1,
-      title: "Summary 1",
-      created_at: "2024-01-01",
-      original_file_url: "https://example.com/file1.pdf",
-      summary_text: "This is a summary of the first file.",
-      status: "completed",
-    },
-    {
-      id: 2,
-      status: "pending",
-      title: "Summary 2",
-      created_at: "2024-01-02",
-      summary_text: "This is a summary of the second file.",
-      original_file_url: "https://example.com/file2.pdf",
-    },
-    {
-      id: 3,
-      status: "in-progress",
-      title: "Summary 3",
-      summary_text: "This is a summary of the third file.",
-      created_at: "2024-01-03",
-      original_file_url: "https://example.com/file3.pdf",
-    },
-    {
-      id: 4,
-      status: "completed",
-      title: "Summary 4",
-      summary_text: "This is a summary of the fourth file.",
-      created_at: "2024-01-04",
-      original_file_url: "https://example.com/file4.pdf",
-    },
-    {
-      id: 5,
-      status: "completed",
-      summary_text: "This is a summary of the fifth file.",
-      title: "Summary 5",
-      created_at: "2024-01-05",
-      original_file_url: "https://example.com/file5.pdf",
-    },
-  ];
+  const summaries = await getSummaryByUserId(userId as string);
   return (
     <main className="min-h-screen">
       <div className="container mx-auto flex flex-col gap-4">
@@ -68,7 +35,7 @@ const DashboardPage = () => {
           </Button>
         </div>
       </div>
-      <div className="mb-6">
+      <div className="container mb-6">
         <div
           className="bg-sky-50 border border-sky-200 rounded-lg
             p-4 text-sky-800"
@@ -87,7 +54,7 @@ const DashboardPage = () => {
         </div>
       </div>
       <div
-        className="grid grid-cols-1 gap-4 sm:gap-6
+        className="container grid grid-cols-1 gap-4 sm:gap-6
         md:grid-cols-2 lg:grid-cols-3 sm:px-0"
       >
         {summaries.map((_, index) => (
