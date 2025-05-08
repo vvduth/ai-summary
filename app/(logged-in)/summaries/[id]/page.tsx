@@ -36,12 +36,12 @@ const SummaryPage = async ({ params }: { params: Promise<{ id: string }> }) => {
             <div
               className="relative p-4 sm:p-6 lg:p-8
               bg-white/80 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-xl 
-              border border-rose-100/30 transition-all duration-300 hover:shadow-2xl
+              border border-sky-100/30 transition-all duration-300 hover:shadow-2xl
               hover:bg-white/90 max-w-4xl mx-auto"
             >
               <div
                 className="absolute inset-0
-                          bg-linear-to-brfrom-rose-50/50
+                          bg-linear-to-brfrom-sky-50/50
                           via-orange-50
                           30 to-transparent opacity-50 rounded-2xl
                           sm:rounded-3xl"
@@ -56,7 +56,7 @@ const SummaryPage = async ({ params }: { params: Promise<{ id: string }> }) => {
                 <FileText
                   className="h-3 w-3 sm:h-4
                             sm:w-4
-                            text-rose-400"
+                            text-sky-400"
                 />
                 {summary.word_count?.toLocaleString()} words
               </div>
