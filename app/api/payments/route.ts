@@ -1,3 +1,4 @@
+import { handleCheckoutCompleted } from "@/lib/payments";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_API_KEY!, {});
@@ -12,10 +13,17 @@ export const POST = async (req: NextRequest) => {
     event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
     switch (event.type) {
       case "checkout.session.completed":
-        const session = event.data.object;
-        // Handle the checkout.session.completed event
-        console.log("Payment was successful!", session);
+        console.log("Payment was successful!");
+        const sessionId = event.data.object.id;
+        const session = await stripe.checkout.sessions.retrieve(sessionId, {
+            expand: ["line_items"],
+        })
+
+        await handleCheckoutCompleted({session,stripe});
         break;
+      case "customer.subscription.deleted":
+        const subscription = event.data.object;
+        console.log("Subscription was deleted!", subscription);
       default:
         console.log(`Unhandled event type ${event.type}`);
         break;
