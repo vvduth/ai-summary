@@ -4,6 +4,7 @@ import { FileText } from "lucide-react";
 import { Button } from "../ui/button";
 import NavLink from "./nav-link";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import PlanBagde from "./PlanBagde";
 const Header = () => {
   const isLoggingIn = false; // Replace with your authentication logic
   return (
@@ -38,7 +39,7 @@ const Header = () => {
           <div className="flex gap-2 items-center">
             <NavLink href={"/upload"}>Upload a PDF</NavLink>
             <div className="px-2 py-1 text-sm font-semibold text-white bg-blue-500 rounded-md">
-              Pro
+              <PlanBagde />
             </div>
             <SignedIn>
               <UserButton />

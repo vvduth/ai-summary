@@ -1,4 +1,4 @@
-import { handleCheckoutCompleted } from "@/lib/payments";
+import { handleCheckoutCompleted, handleSubscriptionDeleted } from "@/lib/payments";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_API_KEY!, {});
@@ -22,8 +22,12 @@ export const POST = async (req: NextRequest) => {
         await handleCheckoutCompleted({session,stripe});
         break;
       case "customer.subscription.deleted":
+        console.log("Subscription was deleted!");
         const subscription = event.data.object;
-        console.log("Subscription was deleted!", subscription);
+        const subscriptionId = subscription.id;
+        await handleSubscriptionDeleted({subscriptionId, stripe});
+        break;
+        
       default:
         console.log(`Unhandled event type ${event.type}`);
         break;

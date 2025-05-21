@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-
-type PricingPlan = {
+import { plans } from "@/app/constants";
+export type PricingPlan = {
   name: string;
   price: string;
   description: string;
@@ -12,47 +12,7 @@ type PricingPlan = {
   priceId: string;
   id: string;
 };
-const plans: PricingPlan[] = [
-  {
-    id: "free",
-    name: "Free",
-    price: "0",
-    description: "Basic features for free",
-    features: [
-      "Upload up to 5 PDFs per month",
-      "Basic summary generation",
-      "Limited access to advanced features",
-    ],
-    paymenLink: "",
-    priceId: "",
-  },
-  {
-    name: "Pro",
-    id: "pro",
-    price: "9.99",
-    description: "Advanced features for professionals",
-    features: [
-      "Upload up to 20 PDFs per month",
-      "Advanced summary generation",
-      "Access to premium features",
-    ],
-    paymenLink: "",
-    priceId: "",
-  },
-  {
-    name: "Enterprise",
-    id: "enterprise",
-    price: "29.99",
-    description: "Custom solutions for businesses",
-    features: [
-      "Unlimited PDF uploads",
-      "Custom summary generation options",
-      "Dedicated support and training",
-    ],
-    paymenLink: "",
-    priceId: "",
-  },
-];
+
 const PricingSection = () => {
   return (
     <section className="relative overflow-hidden bg-gray-50" id="pricing">

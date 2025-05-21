@@ -78,3 +78,22 @@ async function createPayment({
     console.log("Error creating payment", error);
   }
 }
+
+
+export async function handleSubscriptionDeleted({
+  subscriptionId,
+  stripe,
+}: {
+  subscriptionId: string;
+  stripe: Stripe;
+}) {
+  try {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const sql = await getDbConnection();
+  
+    await sql`UPDATE users SET status = 'cancelled' WHERE customer_id = ${subscription.customer}`;
+  } catch (error) {
+    console.log("Error updating user status", error);
+    throw error;
+  }
+}
