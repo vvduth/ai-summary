@@ -26,8 +26,8 @@ export const plans: PricingPlan[] = [
       "Access to premium features",
     ],
     paymenLink: process.env.NODE_ENV === 'development' ? 
-    'https://buy.stripe.com/test_14A8wOdJPh2Wb1D9aqffy00': '',
-    priceId: "price_1RR8QzCzuRDSbLjDFzrhTiwe",
+    'https://buy.stripe.com/test_14A8wOdJPh2Wb1D9aqffy00': 'https://buy.stripe.com/test_fZu4gy6fqaU73xid7I43S00',
+    priceId: "price_1RRdlmCpGAJrQNJzYnTJ8oIj",
   },
   {
     name: "Pro",
@@ -40,8 +40,8 @@ export const plans: PricingPlan[] = [
       "Dedicated support and training",
     ],
     paymenLink: process.env.NODE_ENV === 'development' ? 
-    'https://buy.stripe.com/test_8x2fZgbBHaEy1r3aeuffy01': '',
-    priceId: "price_1RR8UoCzuRDSbLjDU25ynmkN",
+    'https://buy.stripe.com/test_8x2fZgbBHaEy1r3aeuffy01': 'https://buy.stripe.com/test_cNieVcavGd2f6Ju3x843S01',
+    priceId: "price_1RRdlmCpGAJrQNJziS1VShdS",
   },
 ];
 
