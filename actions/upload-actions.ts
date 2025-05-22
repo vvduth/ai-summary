@@ -15,8 +15,7 @@ interface PDFSummaryType {
   title?: string;
   fileName?: string;
 }
-
-export async function generatePdfSummary(
+export async function generatePdfText(
   uploadresponse: [
     {
       serverData: {
@@ -50,6 +49,40 @@ export async function generatePdfSummary(
   }
   try {
     const pdfText = await fetchAndExtractPdftext(pdfUrl);
+    if (!pdfText) {
+      return {
+        success: false,
+        message: "No text extracted from PDF",
+        data: null,
+      };
+    }
+
+    const formatedFilename = formatFileNameAsTitle(fileName);
+
+    return {
+      success: true,
+      message: "text extracted successfully",
+      data: { 
+        title: formatedFilename, 
+        pdfText,
+       },
+    };
+  } catch (error) {
+    console.error("Error occurred while extracting text: ", error);
+    return {
+      success: false,
+      message: "Error occurred while extracting text",
+      data: null,
+    };
+  }
+}
+
+
+export async function generatePdfSummary(
+  {pdfText, fileName}: {pdfText: string; fileName: string}
+) {
+  
+  try {
     let summary;
     try {
       summary = await summarizeTextFromOpenAI(pdfText);
@@ -77,13 +110,13 @@ export async function generatePdfSummary(
       };
     }
 
-    const formatedFilename = formatFileNameAsTitle(fileName);
+    
 
     return {
       success: true,
       message: "Summary generated successfully",
       data: { 
-        title: formatedFilename, 
+        title: fileName, 
         summary },
     };
   } catch (error) {

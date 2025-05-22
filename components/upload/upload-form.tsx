@@ -4,7 +4,11 @@ import UploadFormInout from "./upload-form-input";
 import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
 import { toast } from "sonner";
-import { generatePdfSummary, storePDFSummary } from "@/actions/upload-actions";
+import {
+  generatePdfSummary,
+  generatePdfText,
+  storePDFSummary,
+} from "@/actions/upload-actions";
 import { useRouter } from "next/navigation";
 import LoadingSkeleton from "./LoadingSkeleton";
 
@@ -66,8 +70,8 @@ const UploadForm = () => {
       // upload the flw to uploadthing
       const resp = await startUpload([file]);
       if (!resp) {
-        toast.error("Oh shiet, somthing went wrong homie", {
-          description: "Please try again later boi",
+        toast.error("Something wrong while uploading", {
+          description: "Please try again later",
         });
         return;
       }
@@ -75,33 +79,40 @@ const UploadForm = () => {
         description: "Hang tight, or AI is working on it",
       });
 
+      // call ai service
+      const pdftextResult = await generatePdfText(resp as any);
+      toast.info("Processing PDF", {
+        description: "Please wait a moment, our AI is working on it",
+      });
+
+      const summaryResult = await generatePdfSummary({
+        pdfText: pdftextResult?.data?.pdfText ?? "",
+        fileName: pdftextResult?.data?.title ?? "",
+      });
+
+      toast.info("Generating summary", {
+        description: "We done processing, our AI is working on it",
+      });
+      const { data = null, message = null } = summaryResult || {};
+
       // parse odf using langchain
-      const summary = await generatePdfSummary(resp as any);
-      const { data = null, message = null } = summary || {};
+      //const summaryResult = await generatePdfSummary(resp as any);
 
-      if (!data) {
-        toast.error(message || "Error occurred while generating summary", {
-          description: "Please try again laterrr",
-        });
-        return;
-      }
-      if (data) {
-        let storeResult: any;
-        toast.success("Saving PDF summary to database", {
-          description: "Please wait a moment",
-        });
+      let storeResult: any;
+      toast.info("Saving PDF summary to database", {
+        description: "Please wait a moment",
+      });
 
-        if (data.summary) {
-          storeResult = await storePDFSummary({
-            fileUrl: resp[0].serverData.fileUrl,
-            summary: data.summary as string,
-            title: data.title,
-            fileName: file.name,
-          });
-          toast.success("PDF summary saved successfully", {
-            description: "You can view the summary in your dashboard",
-          });
-        }
+      if (data?.summary) {
+        storeResult = await storePDFSummary({
+          fileUrl: resp[0].serverData.fileUrl,
+          summary: data.summary as string,
+          title: data.title,
+          fileName: file.name,
+        });
+        toast.success("PDF summary saved successfully", {
+          description: "You can view the summary in your dashboard",
+        });
 
         formRef.current?.reset();
         router.push(`/summaries/${storeResult.data.id}`);
@@ -116,7 +127,6 @@ const UploadForm = () => {
     } finally {
       setIsLoading(false);
     }
-
   };
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl mx-auto">

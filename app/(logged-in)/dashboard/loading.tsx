@@ -1,10 +1,6 @@
 import React from 'react'
 
-function HeaderSkeleton() {
-    return (
-        <p>Header</p>
-    )
-}
+
 
 const Loading = () => {
   return (
