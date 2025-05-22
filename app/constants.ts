@@ -1,4 +1,5 @@
 import { PricingPlan } from "@/components/home/pricing-section";
+import { scale } from "motion/react";
 
 export const plans: PricingPlan[] = [
   {
@@ -64,4 +65,29 @@ export const containerVariannts = {
       delayChildren: 0.2,
     }
   }
+}
+
+export const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut",
+    },
+  }
+}
+
+export const buttonVariants = {
+ scale: 1.05,
+ transition: {
+  type: "spring",
+  stiffness: 300,
+  damping: 20,
+  mass: 0.5,
+ }
 }

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { NavigationControls } from "./NavigationControls";
 import ProgressBar from "./ProgressBar";
 import ContentSection from "./ContentSection";
+import { MotionDiv } from "../common/motion-wrapper";
 
 const parseSection = (section: string) => {
   const [title, ...content] = section.split("\n");
@@ -85,7 +86,16 @@ const SummaryViewer = ({
       sections={sections}
       currentSection={currentSection}
      />
-        <div className="h-full overflow-y-auto scrollbar-hide
+        <MotionDiv 
+        key={currentSection}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{
+          opacity: 1,
+          
+        }}
+        transition={{ duration: 0.3 }}
+        exit={{ opacity: 0, y: 20 }}
+        className="h-full overflow-y-auto scrollbar-hide
         pt-12 sm:pt-16 pb-20 sm:pb-24">
           <div className="px-4 sm:px-6">
             <SectionTitle title={sections[currentSection]?.title || ''} />
@@ -94,7 +104,7 @@ const SummaryViewer = ({
               points={sections[currentSection]?.points || []}
             />
           </div>
-        </div>
+        </MotionDiv>
         <NavigationControls
           currentSection={currentSection}
           totalSections={sections.length}

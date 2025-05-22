@@ -1,5 +1,6 @@
 import { BrainCircuit, FileOutput, FileText, MoveRight } from "lucide-react";
 import React from "react";
+import { MotionDiv, MotionH2, MotionH3 } from "../common/motion-wrapper";
 
 type Step = {
   icon: React.ReactNode;
@@ -31,21 +32,33 @@ const HowItWorks = () => {
       px-4 sm:px-6 lg:px-8 lg:pt-12"
       >
         <div className="text-center mb-16">
-          <h2 className="font-bold text-4xl uppercase mb-4 text-sky-500">
+          <MotionH2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="font-bold text-4xl uppercase mb-4 text-sky-500">
             How we roll
-          </h2>
-          <h3 className="font-bold text-center text-3xl max-w-2xl mask-auto">
+          </MotionH2>
+          <MotionH3 
+           initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="font-bold text-center text-3xl max-w-2xl mask-auto">
             One PDF, 3 steps, and you're living the dream!
-          </h3>
+          </MotionH3>
         </div>
         <div
           className="grid grid-cols-1 md:grid-cols-3 gap-8
         max-w-6xl mx-auto relative"
         >
           {steps.map((step, index) => (
-            <div key={index} className="">
+            <MotionDiv 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+            key={index} className="">
               <StepItem key={index} {...step} />
-            </div>
+            </MotionDiv>
           ))}
         </div>
       </div>

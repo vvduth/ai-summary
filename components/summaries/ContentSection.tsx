@@ -1,4 +1,6 @@
 import React from "react";
+import { MotionDiv } from "../common/motion-wrapper";
+import { containerVariannts, itemVariants } from "@/app/constants";
 
 interface Props {
   title: string;
@@ -28,7 +30,8 @@ function parseEmojiPoint(content: string) {
 const EmojiPoint = ({ point, index }: { index: number; point: string }) => {
   const { emoji, text } = parseEmojiPoint(point) ?? {};
   return (
-    <div
+    <MotionDiv
+      variants={itemVariants}
       key={`point-${index}`}
       className={`group relative bg-linear-to-br
           from-gray-200/[0.08]
@@ -52,13 +55,14 @@ text-muted-foreground/90 leading-relaxed"
           {text}
         </p>
       </div>
-    </div>
+    </MotionDiv>
   );
 };
 
 const RegularPoint = ({ point, index }: { index: number; point: string }) => {
   return (
-    <div
+    <MotionDiv
+      variants={itemVariants}
       key={`point-${index}`}
       className={`group relative bg-linear-to-br
           from-gray-200/[0.08]
@@ -80,28 +84,37 @@ const RegularPoint = ({ point, index }: { index: number; point: string }) => {
           {point}
         </p>
       </div>
-    </div>
+    </MotionDiv>
   );
 };
 
 const ContentSection = ({ title, points }: Props) => {
   return (
-    <div className="space-y-4">
+    <MotionDiv
+      variants={containerVariannts}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      transition={{ duration: 0.5 }}
+      key={points.join("")}
+      className="space-y-4"
+    >
       {points.map((point, index) => {
         const { isNumbered, isMainPoint, hasEmoji, isEmpty } =
           parsePoint(point);
 
-        if (isEmpty) return null;  
+        if (isEmpty) return null;
 
-        if (hasEmoji || isMainPoint) {
-          return <EmojiPoint
-            key={`point-${index}`}
-            
-          index={index} point={point} />;
+        if (hasEmoji && isMainPoint) {
+          return (
+            <EmojiPoint key={`point-${index}`} index={index} point={point} />
+          );
         }
-        return <RegularPoint key={`point-${index}`} index={index} point={point} />;
+        return (
+          <RegularPoint key={`point-${index}`} index={index} point={point} />
+        );
       })}
-    </div>
+    </MotionDiv>
   );
 };
 

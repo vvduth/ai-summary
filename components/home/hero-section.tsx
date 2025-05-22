@@ -3,8 +3,8 @@ import { Button } from "../ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
-import { MotionSection } from "../common/motion-wrapper";
-import { containerVariannts } from "@/app/constants";
+import { MotionDiv, MotionH1, MotionH2, MotionSection, MotionSpan } from "../common/motion-wrapper";
+import { buttonVariants, containerVariannts, itemVariants } from "@/app/constants";
 
 const HeroSection = () => {
   return (
@@ -32,7 +32,10 @@ const HeroSection = () => {
         </Badge>
       </div>
 
-      <h1 className="font-bold py-6 text-center">
+      <MotionH1 
+        variants={itemVariants}
+
+      className="font-bold py-6 text-center">
         Turn your PDFs into{" "}
         <span className="relative inline-block">
           <span className="relative z-10 px-2">snappy</span>
@@ -42,16 +45,19 @@ const HeroSection = () => {
           ></span>
         </span>{" "}
         summaries
-      </h1>
+      </MotionH1>
 
-      <h2
+      <MotionH2
+      variants={itemVariants}
         className="text-lg sm:text-xl lg:text-2xl text-center px-4 
       lg:px-0 lg:max-w-4xl text-gray-600"
       >
         {" "}
         Get the gist of your docs in no time, no sweat{" "}
-      </h2>
-      <div>
+      </MotionH2>
+      <MotionDiv
+      variants={itemVariants}
+      whileHover={buttonVariants}>
         <Button
           className=" text-white mt-6 
       text-base sm:text-lg lg:text-xl rounded-full px-8 sm:px-1 md:px-8
@@ -60,11 +66,11 @@ const HeroSection = () => {
         >
           <Link className="flex items-center" href={"/#pricing"}>
             {" "}
-            <span>Give it a whirl</span>
+            <MotionSpan whileHover={buttonVariants}>Give it a whirl</MotionSpan>
             <ArrowRight className="animate-pulse" />
           </Link>
         </Button>
-      </div>
+      </MotionDiv>
     </MotionSection>
   );
 };
