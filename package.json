@@ -16,6 +16,7 @@
     "@neondatabase/serverless": "^1.0.0",
     "@radix-ui/react-dialog": "^1.1.13",
     "@radix-ui/react-slot": "^1.2.0",
+    "@stripe/stripe-js": "^7.3.0",
     "@uploadthing/react": "^7.3.0",
     "ai-summary": "file:",
     "class-variance-authority": "^0.7.1",
