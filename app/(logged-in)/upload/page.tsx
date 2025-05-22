@@ -4,6 +4,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
 import { redirect } from "next/navigation";
 import { hasReachedUploadLimit } from "@/lib/user";
+
+export const maxDuration = 60;
 const UploadPage = async () => {
   const user = await currentUser();
   if (!user?.id) {
