@@ -33,13 +33,12 @@ export const POST = async (req: NextRequest) => {
         break;
     }
   } catch (err: any) {
-    NextResponse.json(
+    return NextResponse.json(
       {
         error: `Webhook Error: ${err.message}`,
       },
       { status: 400 }
     );
-    return;
   }
   return NextResponse.json({
     status: "success",
