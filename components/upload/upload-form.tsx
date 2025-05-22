@@ -6,6 +6,7 @@ import { useUploadThing } from "@/utils/uploadthing";
 import { toast } from "sonner";
 import { generatePdfSummary, storePDFSummary } from "@/actions/upload-actions";
 import { useRouter } from "next/navigation";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const schema = z.object({
   file: z
@@ -116,9 +117,6 @@ const UploadForm = () => {
       setIsLoading(false);
     }
 
-    // summarizde the pdf using AI
-    // save the usmmry to the database
-    // reditrect to the [id] summary page
   };
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl mx-auto">
@@ -127,6 +125,35 @@ const UploadForm = () => {
         ref={formRef}
         onSubmit={handleSubmit}
       />
+      {isLoading && (
+        <>
+          <div className="relative">
+            <div className="absolute inset-0 bg-gray-200 opacity-50 rounded-lg"></div>
+            <div className="flex items-center justify-center h-full">
+              <svg
+                className="animate-spin h-8 w-8 text-blue-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  fill="none"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="none"
+                  d="M4 12a8 8 0 1 1 16 0A8 8 0 1 1 4 12z"
+                />
+              </svg>
+            </div>
+          </div>
+          <LoadingSkeleton />
+        </>
+      )}
     </div>
   );
 };

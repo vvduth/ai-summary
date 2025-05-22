@@ -12,13 +12,13 @@ const LoggedInLayout =async  ({children}: {
         redirect('/sign-in')
     }
 
-    const hasActiveSubscription = await getSubciptionStatus(user)
+    // const hasActiveSubscription = await getSubciptionStatus(user)
 
-    if (!hasActiveSubscription) {
-        return (
-            <UpgradeRequired/>
-        )
-    }
+    // if (!hasActiveSubscription) {
+    //     return (
+    //         <UpgradeRequired/>
+    //     )
+    // }
   return (
     <div>{children}</div>
   )

@@ -20,11 +20,13 @@ const DashboardPage = async () => {
   return (
     <main className="min-h-screen">
       <div className="container mx-auto flex flex-col gap-4">
-        <h1>Your summaries</h1>
+        <div className="flex flex-col gap-6 mt-6">
+          <h1 className="text-4xl">Your summaries</h1>
         <p>
           Welcome to the dashboard, where your summaries are cooler than the
           other side of the pillow!
         </p>
+        </div>
         <div className="flex justify-between items-center mt-4">
           {!hasReachedLimit && (
             <Button
