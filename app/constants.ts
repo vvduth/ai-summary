@@ -43,3 +43,25 @@ export const plans: PricingPlan[] = [
     priceId: "price_1RR8UoCzuRDSbLjDU25ynmkN",
   },
 ];
+
+export const containerVariannts = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut",
+    },
+  },
+  visible: {
+    opacity:1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.2,
+    }
+  }
+}

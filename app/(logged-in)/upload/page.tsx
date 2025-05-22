@@ -1,8 +1,20 @@
 import UploadForm from "@/components/upload/upload-form";
 import UploadHeader from "@/components/upload/upload-header";
+import { currentUser } from "@clerk/nextjs/server";
 import React from "react";
+import { redirect } from "next/navigation";
+import { hasReachedUploadLimit } from "@/lib/user";
+const UploadPage = async () => {
+  const user = await currentUser();
+  if (!user?.id) {
+    redirect("/sign-in");
+   }
 
-const UploadPage = () => {
+   const userId = user?.id;
+   const {hasReachedLimit, uploadLimit} = await hasReachedUploadLimit(userId as string);
+   if (hasReachedLimit ) {
+    redirect("/dashboard");
+   }
   return (
     <section className="min-h-screen">
       <div
