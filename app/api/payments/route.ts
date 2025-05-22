@@ -15,6 +15,7 @@ export const POST = async (req: NextRequest) => {
       case "checkout.session.completed":
         console.log("Payment was successful!");
         const sessionId = event.data.object.id;
+        console.log("Session ID:", sessionId);
         const session = await stripe.checkout.sessions.retrieve(sessionId, {
             expand: ["line_items"],
         })
